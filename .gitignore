@@ -1,0 +1,21 @@
+# Python cache and test artifacts
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Local environments and secrets
+.env
+.env.*
+!.env.example
+.venv/
+venv/
+
+# Frontend dependencies and build output
+node_modules/
+dist/
+build/
+
+# macOS
+.DS_Store
+
+

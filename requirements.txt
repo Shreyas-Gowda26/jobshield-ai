@@ -1,0 +1,7 @@
+crewai[google-genai]==1.15.23
+pymongo>=4.6.0
+python-whois
+python-dotenv>=1.0.0
+requests>=2.31.0
+tavily-python
+pytest==9.1.1
