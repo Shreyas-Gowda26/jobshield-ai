@@ -1,10 +1,10 @@
 
 from unittest.mock import patch
 
-from backend.tools.registry.mca_lookup_tool import lookup_company
+from tools.registry.mca_lookup_tool import lookup_company
 
 
-@patch("backend.tools.registry.mca_lookup_tool._search")
+@patch("tools.registry.mca_lookup_tool._search")
 def test_company_match_preserved_when_another_resource_fails(mock_search):
     mock_search.side_effect = [
         (
@@ -44,13 +44,13 @@ def test_company_match_preserved_when_another_resource_fails(mock_search):
 import requests
 from unittest.mock import patch
 import pytest
-from backend.tools.registry.mca_lookup_tool import (
+from tools.registry.mca_lookup_tool import (
     _query,
     MCAApiError,
 )
 
 
-@patch("backend.tools.registry.mca_lookup_tool.requests.get")
+@patch("tools.registry.mca_lookup_tool.requests.get")
 def test_mca_request_timeout_raises_mca_api_error(mock_get):
     mock_get.side_effect = requests.Timeout("Request timed out")
 
@@ -67,7 +67,7 @@ def test_mca_request_timeout_raises_mca_api_error(mock_get):
 import pytest
 from unittest.mock import Mock, patch
 
-from backend.tools.registry.mca_lookup_tool import _query, MCAApiError
+from tools.registry.mca_lookup_tool import _query, MCAApiError
 
 
 def _mock_response(payload=None, json_error=None):
@@ -82,7 +82,7 @@ def _mock_response(payload=None, json_error=None):
     return response
 
 
-@patch("backend.tools.registry.mca_lookup_tool.requests.get")
+@patch("tools.registry.mca_lookup_tool.requests.get")
 def test_mca_invalid_json_is_wrapped(mock_get):
     mock_get.return_value = _mock_response(
         json_error=ValueError("Invalid JSON")
@@ -97,7 +97,7 @@ def test_mca_invalid_json_is_wrapped(mock_get):
     "unexpected response",
     123,
 ])
-@patch("backend.tools.registry.mca_lookup_tool.requests.get")
+@patch("tools.registry.mca_lookup_tool.requests.get")
 def test_mca_unexpected_response_type_is_handled(mock_get, payload):
     mock_get.return_value = _mock_response(payload=payload)
 
@@ -105,7 +105,7 @@ def test_mca_unexpected_response_type_is_handled(mock_get, payload):
         _query("test-resource", {"company_name": "Example"})
 
 
-@patch("backend.tools.registry.mca_lookup_tool.requests.get")
+@patch("tools.registry.mca_lookup_tool.requests.get")
 def test_mca_missing_status_is_rejected(mock_get):
     mock_get.return_value = _mock_response(
         payload={"records": []}
@@ -115,7 +115,7 @@ def test_mca_missing_status_is_rejected(mock_get):
         _query("test-resource", {"company_name": "Example"})
 
 
-@patch("backend.tools.registry.mca_lookup_tool.requests.get")
+@patch("tools.registry.mca_lookup_tool.requests.get")
 def test_mca_missing_records_returns_empty_list(mock_get):
     mock_get.return_value = _mock_response(
         payload={"status": "ok"}
@@ -128,7 +128,7 @@ def test_mca_missing_records_returns_empty_list(mock_get):
 
 from unittest.mock import patch, call
 
-from backend.tools.registry.mca_lookup_tool import lookup_company,settings
+from tools.registry.mca_lookup_tool import lookup_company,settings
 
 
 def test_lookup_company_rejects_empty_name():
@@ -140,7 +140,7 @@ def test_lookup_company_rejects_empty_name():
     assert result["errors"] == []
 
 
-@patch("backend.tools.registry.mca_lookup_tool._search")
+@patch("tools.registry.mca_lookup_tool._search")
 def test_lookup_company_empty_results_are_not_found(mock_search):
     mock_search.return_value = ([], [])
 
@@ -152,7 +152,7 @@ def test_lookup_company_empty_results_are_not_found(mock_search):
     assert result["errors"] == []
 
 
-@patch("backend.tools.registry.mca_lookup_tool._search")
+@patch("tools.registry.mca_lookup_tool._search")
 def test_lookup_company_deduplicates_same_cin(mock_search):
     record = {
         "CompanyName": "Example Technologies Private Limited",
@@ -167,7 +167,7 @@ def test_lookup_company_deduplicates_same_cin(mock_search):
     assert len(result["matches"]) == 1
 
 
-@patch("backend.tools.registry.mca_lookup_tool._search")
+@patch("tools.registry.mca_lookup_tool._search")
 def test_lookup_company_preserves_distinct_cins(mock_search):
     records = [
         {
@@ -190,7 +190,7 @@ def test_lookup_company_preserves_distinct_cins(mock_search):
 
 
 
-@patch("backend.tools.registry.mca_lookup_tool._search")
+@patch("tools.registry.mca_lookup_tool._search")
 def test_lookup_company_records_candidate_variations(mock_search):
     mock_search.return_value = ([], [])
 
@@ -222,12 +222,12 @@ def test_lookup_company_records_candidate_variations(mock_search):
 import pytest
 from unittest.mock import patch
 
-from backend.tools.registry.mca_lookup_tool import lookup_cin
+from tools.registry.mca_lookup_tool import lookup_cin
 
 
 def test_lookup_cin_rejects_empty_cin():
     with patch(
-        "backend.tools.registry.mca_lookup_tool._search"
+        "tools.registry.mca_lookup_tool._search"
     ) as mock_search:
         result = lookup_cin("")
 
@@ -244,11 +244,11 @@ def test_lookup_cin_normalizes_cin_before_search():
     valid_cin = "L17110KA1988PLC009162"
 
     with patch(
-        "backend.tools.registry.mca_lookup_tool._search"
+        "tools.registry.mca_lookup_tool._search"
     ) as mock_search:
         mock_search.return_value = ([{"company": "Example"}], [])
         with patch(
-            "backend.tools.registry.mca_lookup_tool.parse_cin",
+            "tools.registry.mca_lookup_tool.parse_cin",
             return_value={"valid": True},
         ):
             result = lookup_cin(f"  {valid_cin.lower()}  ")
@@ -263,11 +263,11 @@ def test_lookup_cin_handles_api_exception():
 
     with (
         patch(
-            "backend.tools.registry.mca_lookup_tool.parse_cin",
+            "tools.registry.mca_lookup_tool.parse_cin",
             return_value={"valid": True},
         ),
         patch(
-            "backend.tools.registry.mca_lookup_tool._search",
+            "tools.registry.mca_lookup_tool._search",
             side_effect=Exception("unexpected failure"),
         ),
     ):
@@ -283,13 +283,13 @@ def test_lookup_cin_reports_mca_api_error():
 
     with (
         patch(
-            "backend.tools.registry.mca_lookup_tool.parse_cin",
+            "tools.registry.mca_lookup_tool.parse_cin",
             return_value={"valid": True},
         ),
         patch(
-            "backend.tools.registry.mca_lookup_tool._search",
+            "tools.registry.mca_lookup_tool._search",
             side_effect=__import__(
-                "backend.tools.registry.mca_lookup_tool",
+                "tools.registry.mca_lookup_tool",
                 fromlist=["MCAApiError"],
             ).MCAApiError("MCA unavailable"),
         ),
@@ -307,11 +307,11 @@ def test_lookup_cin_returns_not_found_when_no_records_or_errors():
 
     with (
         patch(
-            "backend.tools.registry.mca_lookup_tool.parse_cin",
+            "tools.registry.mca_lookup_tool.parse_cin",
             return_value={"valid": True},
         ),
         patch(
-            "backend.tools.registry.mca_lookup_tool._search",
+            "tools.registry.mca_lookup_tool._search",
             return_value=([], []),
         ),
     ):
@@ -327,11 +327,11 @@ def test_lookup_cin_returns_error_when_no_records_and_search_errors():
 
     with (
         patch(
-            "backend.tools.registry.mca_lookup_tool.parse_cin",
+            "tools.registry.mca_lookup_tool.parse_cin",
             return_value={"valid": True},
         ),
         patch(
-            "backend.tools.registry.mca_lookup_tool._search",
+            "tools.registry.mca_lookup_tool._search",
             return_value=([], ["MCA resource unavailable"]),
         ),
     ):
@@ -344,7 +344,7 @@ def test_lookup_cin_returns_error_when_no_records_and_search_errors():
 
 from unittest.mock import patch
 
-from backend.tools.registry.mca_lookup_tool import lookup_company
+from tools.registry.mca_lookup_tool import lookup_company
 
 
 def test_lookup_company_deduplicates_records_without_cin():
@@ -354,10 +354,10 @@ def test_lookup_company_deduplicates_records_without_cin():
     ]
 
     with patch(
-        "backend.tools.registry.mca_lookup_tool.candidate_names",
+        "tools.registry.mca_lookup_tool.candidate_names",
         return_value=["Example Test Company"],
     ), patch(
-        "backend.tools.registry.mca_lookup_tool._search",
+        "tools.registry.mca_lookup_tool._search",
         return_value=(records, []),
     ):
         result = lookup_company("Example Test Company")
@@ -368,7 +368,7 @@ def test_lookup_company_deduplicates_records_without_cin():
 
 import pytest
 
-from backend.tools.registry.mca_lookup_tool import parse_cin
+from tools.registry.mca_lookup_tool import parse_cin
 
 
 def test_parse_cin_valid_unlisted_company():

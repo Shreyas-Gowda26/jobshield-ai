@@ -1,7 +1,7 @@
 
 from crewai import Task
 
-from backend.crews.hierarchical_crew import create_hierarchical_crew
+from crews.hierarchical_crew import create_hierarchical_crew
 
 
 def main() -> None:

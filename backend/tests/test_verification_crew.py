@@ -1,4 +1,4 @@
-from backend.crews import verification_crew
+from crews import verification_crew
 
 
 def test_manager_report_cannot_change_official_score(monkeypatch):

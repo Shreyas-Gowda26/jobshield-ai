@@ -1,12 +1,12 @@
 from unittest.mock import patch
 
-from backend.agents.coordinator import run_verification
+from agents.coordinator import run_verification
 
 
-@patch("backend.agents.coordinator.save_verification")
-@patch("backend.agents.coordinator.lookup_domain")
-@patch("backend.agents.coordinator.search_company_presence")
-@patch("backend.agents.coordinator.lookup_company")
+@patch("agents.coordinator.save_verification")
+@patch("agents.coordinator.lookup_domain")
+@patch("agents.coordinator.search_company_presence")
+@patch("agents.coordinator.lookup_company")
 def test_api_errors_do_not_increase_risk(
     mock_mca,
     mock_search,
