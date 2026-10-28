@@ -4,6 +4,8 @@
 import { useState } from "react";
 
 import React from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 const API_BASE =
   import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000";
@@ -502,21 +504,17 @@ export default function App() {
               <Section
                 title="AI investigation report"
                 subtitle="The manager's narrative interpretation of the collected evidence."
-              >
+              >               
                 {report ? (
-                  <div className="investigation-report">
-                    {String(report)
-                      .split(/\n{2,}/)
-                      .filter(Boolean)
-                      .map((paragraph, index) => (
-                        <p key={index}>{paragraph}</p>
-                      ))}
-                  </div>
+                <div className="investigation-report">
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                    {String(report)}
+                    </ReactMarkdown>                </div>
                 ) : (
-                  <p className="muted-copy">
+                <p className="muted-copy">
                     No investigation narrative was included in this response.
                     The deterministic verification results are shown above.
-                  </p>
+                </p>
                 )}
                 <p className="disclaimer">
                   AI-generated analysis may contain errors. Verify important

@@ -682,26 +682,6 @@ textarea:focus-visible {
   font-size: 12px;
   line-height: 1.8;
 }
-
-.investigation-report {
-  border: 1px solid #293650;
-  border-radius: 11px;
-  padding: 20px;
-  background: #0d1526;
-}
-
-.investigation-report p {
-  margin: 0 0 14px;
-  color: #c3cde0;
-  font-size: 12px;
-  line-height: 1.95;
-  overflow-wrap: anywhere;
-}
-
-.investigation-report p:last-child {
-  margin-bottom: 0;
-}
-
 .report-footer {
   display: flex;
   align-items: center;
@@ -802,5 +782,128 @@ textarea:focus-visible {
   .site-footer {
     flex-wrap: wrap;
     font-size: 10px;
+  }
+}
+
+.investigation-report {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 28px;
+  color: #dbe4f0;
+  background: #111827;
+  border: 1px solid #293548;
+  border-radius: 16px;
+  font-size: 14px;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+.investigation-report h1,
+.investigation-report h2,
+.investigation-report h3 {
+  color: #f8fafc;
+  line-height: 1.35;
+  margin-top: 28px;
+  margin-bottom: 12px;
+}
+
+.investigation-report h1 {
+  font-size: 26px;
+  margin-top: 0;
+}
+
+.investigation-report h2 {
+  font-size: 21px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #334155;
+}
+
+.investigation-report h3 {
+  font-size: 17px;
+}
+
+.investigation-report p {
+  margin: 12px 0;
+}
+
+.investigation-report strong {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.investigation-report ul,
+.investigation-report ol {
+  padding-left: 24px;
+  margin: 12px 0;
+}
+
+.investigation-report li {
+  margin: 7px 0;
+  padding-left: 4px;
+}
+
+.investigation-report table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 18px 0;
+  font-size: 13px;
+}
+
+.investigation-report th,
+.investigation-report td {
+  border: 1px solid #334155;
+  padding: 12px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.investigation-report th {
+  background: #1e293b;
+  color: #f8fafc;
+}
+
+.investigation-report tr:nth-child(even) {
+  background: #172033;
+}
+
+.investigation-report blockquote {
+  margin: 16px 0;
+  padding: 12px 18px;
+  border-left: 3px solid #60a5fa;
+  background: #172033;
+  border-radius: 4px;
+}
+
+.investigation-report hr {
+  border: 0;
+  border-top: 1px solid #334155;
+  margin: 24px 0;
+}
+
+.investigation-report code {
+  background: #1e293b;
+  padding: 2px 5px;
+  border-radius: 4px;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 640px) {
+  .investigation-report {
+    padding: 16px;
+    font-size: 13px;
+  }
+
+  .investigation-report table {
+    display: block;
+    overflow-x: auto;
+  }
+
+  .investigation-report h1 {
+    font-size: 22px;
+  }
+
+  .investigation-report h2 {
+    font-size: 18px;
   }
 }
